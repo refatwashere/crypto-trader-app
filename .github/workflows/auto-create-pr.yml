@@ -1,0 +1,47 @@
+name: Auto-create PR from feature branches
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+
+jobs:
+  create_pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Create Draft PR to main
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: create PR from feature branch"
+          title: "ci: add Fly.io remote deploy, Dockerfile, README, env example, and dev setup scripts"
+          body: |
+            This PR implements CI and deployment automation and improves developer onboarding.
+
+            Highlights:
+            - Add GitHub Actions workflow `.github/workflows/deploy-fly.yml` to run backend tests and deploy to Fly.io via remote builds.
+            - Add `backend/Dockerfile` for containerizing the backend service.
+            - Add `fly.toml` template configured to use `backend/Dockerfile`.
+            - Improve developer experience with a modern and detailed `README.md`.
+            - Add `backend/.env.example` documenting expected environment variables.
+            - Add cross-platform DB setup scripts: `scripts/dev-setup.sh` and `scripts/dev-setup.cmd`.
+
+            Notes & Next Steps:
+            - CI requires GitHub Secrets: `FLY_APP_NAME` and `FLY_TOKEN`.
+            - The workflow uses `flyctl deploy --remote-only` to avoid registry login issues in CI.
+            - The backend supports a safe `BINANCE_MODE=mock` to avoid live trades during development.
+
+            Testing:
+            - Backend tests use Jest and Supertest. Run `cd backend && npm ci && npm test -- --detectOpenHandles --runInBand --verbose` locally.
+          base: main
+          head: ${{ github.ref_name }}
+          draft: true
+          labels: |
+            ci
+            automation
