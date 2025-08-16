@@ -1,0 +1,24 @@
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  username TEXT UNIQUE NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE portfolios (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE transactions (
+  id SERIAL PRIMARY KEY,
+  portfolio_id INTEGER REFERENCES portfolios(id) ON DELETE CASCADE,
+  symbol TEXT,
+  side TEXT,
+  quantity NUMERIC,
+  price NUMERIC,
+  executed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

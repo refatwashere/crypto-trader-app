@@ -1,0 +1,17 @@
+{
+  "name": "crypto-trader-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "18.x",
+    "react-native": "0.72.x",
+    "@react-navigation/native": "^6.1.7",
+    "@react-navigation/native-stack": "^6.9.12",
+    "axios": "^1.5.0"
+  },
+  "scripts": {
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios"
+  }
+}
