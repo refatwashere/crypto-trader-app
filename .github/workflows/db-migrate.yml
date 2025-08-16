@@ -1,0 +1,42 @@
+name: Apply DB schema and seed
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+jobs:
+  migrate:
+    name: Apply schema & seed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install psql (postgres client)
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Verify DATABASE_URL secret
+        run: |
+          if [ -z "${{ secrets.DATABASE_URL }}" ]; then
+            echo "ERROR: DATABASE_URL secret is not set. Add it in repo settings > Secrets.";
+            exit 1;
+          fi
+
+      - name: Apply schema
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          echo "Applying database/schema.sql"
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f database/schema.sql
+
+      - name: Apply seed
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          echo "Applying database/seed.sql"
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f database/seed.sql
+
+      - name: Done
+        run: echo "Schema and seed applied."
