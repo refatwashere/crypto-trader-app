@@ -37,4 +37,5 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_TOKEN }}
         run: |
           # Use Fly's remote builder to avoid pushing to the registry directly from CI.
-          ${HOME}/.fly/bin/flyctl deploy --config fly.toml --app ${{ secrets.FLY_APP_NAME }} --region iad --remote-only
+          # Note: `--region` is not a valid flag for flyctl deploy; use fly.toml primary_region or --primary-region to override.
+          ${HOME}/.fly/bin/flyctl deploy --config fly.toml --app ${{ secrets.FLY_APP_NAME }} --remote-only
