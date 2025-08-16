@@ -5,6 +5,8 @@
 - Added `.github/workflows/db-migrate.yml` which applies `database/schema.sql` and `database/seed.sql` to the environment pointed to by the `DATABASE_URL` GitHub Secret on push to `main` or by manual dispatch. This uses the system `psql` client.
 
 - Fixed Fly smoke-check failure by binding the Express server to `0.0.0.0` and adding startup and error logging in `backend/app.js` so the platform can detect the listening address and surface errors.
+
+- Updated `fly.toml`: replaced placeholder app name with `crypto-trader-app` (valid characters) and removed the `[build]` section to allow Fly to rescan/build automatically.
 - Rewrote `README.md` into a modern, detailed, professional guide covering architecture, local dev, testing, deployment to Fly, security, and troubleshooting.
 
 - Added `backend/.env.example` to document required environment variables.

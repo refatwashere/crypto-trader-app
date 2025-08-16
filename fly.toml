@@ -1,10 +1,5 @@
-app = "FLY_APP_NAME"
+app = "crypto-trader-app"
 primary_region = "iad"
-
-[build]
-  # Use the repository Dockerfile for the backend service
-  # Point to the Dockerfile path so Fly's remote builder builds from source.
-  dockerfile = "backend/Dockerfile"
 
 [env]
   PORT = "3000"
