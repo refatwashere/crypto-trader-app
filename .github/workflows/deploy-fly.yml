@@ -32,13 +32,9 @@ jobs:
         run: |
           curl -L https://fly.io/install.sh | sh
           echo "${HOME}/.fly/bin" >> $GITHUB_PATH
-      - name: Build and publish Docker image
-        run: |
-          docker build -t registry.fly.io/${{ secrets.FLY_APP_NAME }}:latest -f backend/Dockerfile .
-          echo "${{ secrets.FLY_TOKEN }}" | docker login registry.fly.io -u _ --password-stdin
-          docker push registry.fly.io/${{ secrets.FLY_APP_NAME }}:latest
-      - name: Deploy to Fly
+      - name: Deploy to Fly (remote build)
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_TOKEN }}
         run: |
-          ${HOME}/.fly/bin/flyctl deploy --image registry.fly.io/${{ secrets.FLY_APP_NAME }}:latest --app ${{ secrets.FLY_APP_NAME }} --region iad
+          # Use Fly's remote builder to avoid pushing to the registry directly from CI.
+          ${HOME}/.fly/bin/flyctl deploy --config fly.toml --app ${{ secrets.FLY_APP_NAME }} --region iad --remote-only
