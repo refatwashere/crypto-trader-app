@@ -20,7 +20,7 @@ jobs:
         run: npm ci
       - name: Run tests
         working-directory: ./backend
-        run: npm test --silent
+        run: npm test -- --detectOpenHandles --runInBand --verbose
 
   deploy:
     needs: test

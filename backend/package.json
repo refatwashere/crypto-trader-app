@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "jest --runInBand"
+  "test": "jest --runInBand --detectOpenHandles --runTestsByPath"
   },
   "dependencies": {
     "binance-api-node": "^0.12.0",
