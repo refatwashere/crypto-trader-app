@@ -1,0 +1,19 @@
+app = "FLY_APP_NAME"
+primary_region = "iad"
+
+[build]
+  # Using the Dockerfile in the backend folder
+  image = "Dockerfile"
+
+[env]
+  PORT = "3000"
+
+[[services]]
+  internal_port = 3000
+  protocol = "tcp"
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
